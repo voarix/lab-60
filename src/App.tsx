@@ -1,7 +1,7 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import { Message } from "./types";
-import MessageList from "./components/MessageList.tsx";
+import MessageList from "./components/MessageList/MessageList.tsx";
 
 const App = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -54,6 +54,8 @@ const App = () => {
 
     return () => clearInterval(intervalId);
   }, []);
+
+  console.log(messages);
 
   return (
     <div className="container">

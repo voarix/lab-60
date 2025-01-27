@@ -6,12 +6,15 @@ interface Props {
   datetime: string;
 }
 
-const MessageItem: React.FC<Props> = ({author, datetime, message}) => {
+const MessageItem: React.FC<Props> = ({ author, datetime, message }) => {
   return (
     <div className="card mt-1">
       <div className="card-body">
         <h5 className="card-title d-flex justify-content-between align-items-center">
-          <span>{author}</span> <small className="text-muted">({new Date(datetime).toLocaleString()})</small>
+          <span>{author}</span>{" "}
+          <small className="text-muted">
+            ({new Date(datetime).toLocaleString()})
+          </small>
         </h5>
         <p className="card-text">{message}</p>
       </div>

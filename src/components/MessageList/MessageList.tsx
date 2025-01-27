@@ -1,5 +1,5 @@
 import MessageItem from "./MessageItem.tsx";
-import { Message } from "../types";
+import { Message } from "../../types";
 import React from "react";
 
 interface MessageListProps {
