@@ -1,33 +1,63 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import { Message } from "./types";
-import MessageItem from "./components/MessageItem.tsx";
+import MessageList from "./components/MessageList.tsx";
 
 const App = () => {
   const [messages, setMessages] = useState<Message[]>([]);
 
-  const fetchRequest = async () => {
-    try{
-      const response = await fetch("http://146.185.154.90:8000/messages");
-      const responseJson = await response.json();
-      setMessages(responseJson);
+  const fetchRequest = async (url: string): Promise<Message[]> => {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error("Network response нот ОКЭЙ");
+    }
+
+    return await response.json();
+  };
+
+  const fetchMessages = async (datetime: string): Promise<Message[]> => {
+    let url = "http://146.185.154.90:8000/messages";
+    if (datetime) {
+      url += `?datetime=${datetime}`;
+    }
+
+    try {
+      return await fetchRequest(url);
     } catch (error) {
-      alert('Ошибка:' + error);
+      console.error("Ошибка:", error);
+      return [];
     }
   };
 
   useEffect(() => {
-    void fetchRequest();
-  }, []);
+    const fetchInitialMessages = async () => {
+      const initialMessages = await fetchMessages("");
+      setMessages(initialMessages);
+    };
 
+    void fetchInitialMessages();
+
+    const intervalId = setInterval(async () => {
+      setMessages((prevState) => {
+        if (prevState.length > 0) {
+          const lastMess = prevState[prevState.length - 1].datetime;
+          fetchMessages(lastMess).then((newMess) => {
+            if (newMess.length > 0) {
+              setMessages((prev) => [...prev, ...newMess]);
+            }
+          });
+        }
+        return prevState;
+      });
+    }, 3000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <div className="container">
-      {messages.length > 0 ? (
-        messages.map((message) => (
-          <MessageItem author={message.author} message={message.message} datetime={message.datetime} key={message._id}/>
-        ))
-      ) : null}
+      <MessageList messages={messages} />
     </div>
   );
 };
