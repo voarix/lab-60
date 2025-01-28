@@ -8,7 +8,7 @@ interface MessageListProps {
 
 const MessageList: React.FC<MessageListProps> = ({ messages }) => {
   return (
-    <>
+    <div className="mt-5">
       {messages.length > 0
         ? messages.map((message) => (
             <MessageItem
@@ -19,7 +19,7 @@ const MessageList: React.FC<MessageListProps> = ({ messages }) => {
             />
           ))
         : null}
-    </>
+    </div>
   );
 };
 

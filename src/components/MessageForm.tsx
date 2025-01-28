@@ -17,8 +17,7 @@ const MessageForm: React.FC<Props> = ({ onSubmitAddToMessages }) => {
     if (form.message.trim() !== "") {
       const newMessMutation = {
         message: form.message,
-        author: "User",
-        datetime: new Date().toISOString(),
+        author: "Магистр Йода",
       };
       onSubmitAddToMessages(newMessMutation);
       setForm(initialMessageForm);
